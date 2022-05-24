@@ -314,6 +314,7 @@ fragCounter = function(bam, skeleton, cov = NULL, midpoint = TRUE, window = 200,
       cov.corr.out$score = cov$reads.corrected
       cov.corr.out$score[is.na(cov.corr.out$score)] = -1
       cov.corr.out = cov.corr.out[width(cov.corr.out)==window] ## remove any funky widths at end of chromosome
+      saveRDS(cov, paste(gsub('.rds$', '', out.rds), '_debug.rds', sep = ''))
       if (exome == TRUE) {
         export(cov.corr.out[, 'score'], out.corr, 'bigWig', dataFormat = 'variableStep')
       } else {

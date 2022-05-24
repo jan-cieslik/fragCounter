@@ -1,6 +1,5 @@
 #!/usr/bin/env Rscript
 library(optparse)
-
 dr.str = "
 
 ███████╗██████╗  █████╗  ██████╗  ██████╗ ██████╗ ██╗   ██╗███╗   ██╗████████╗███████╗██████╗
@@ -10,13 +9,18 @@ dr.str = "
 ██║     ██║  ██║██║  ██║╚██████╔╝╚██████╗╚██████╔╝╚██████╔╝██║ ╚████║   ██║   ███████╗██║  ██║
 ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═══╝   ╚═╝   ╚══════╝╚═╝  ╚═╝
 
-
+Fork by JPC
 "
 
 
 library(optparse)
 options(bitmapType='cairo')
-
+error_exitfunc <- function() {
+  dump.frames(to.file = TRUE)
+  traceback()
+  q(status = 1)
+}
+options(error = error_exitfunc)
 if (!exists('opt'))
     {
       option_list = list(
