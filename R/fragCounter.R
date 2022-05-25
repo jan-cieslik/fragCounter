@@ -303,8 +303,14 @@ fragCounter = function(bam, skeleton, cov = NULL, midpoint = TRUE, window = 200,
 
   } else {
     cov = PrepareCov(bam, cov = NULL, midpoint = midpoint, window = window, minmapq = minmapq, paired = paired, outdir, reference = reference)
+    print("Cov 1")
+    print(class(cov))
     cov = correctcov_stub(cov, gc.rds.dir = gc.rds.dir, map.rds.dir = map.rds.dir)
+    print("Cov 2")
+    print(class(cov))
     cov$reads.corrected = multicoco(cov, numlevs = 1, base = max(10, 1e5/window), mc.cores = 1, fields = c('gc', 'map'), iterative = T, mono = T)$reads.corrected
+    print("Cov 3")
+    print(class(cov))
   }
   if (!is.null(outdir)) {
     out.rds = paste(outdir, '/cov.rds', sep = '')
@@ -314,11 +320,13 @@ fragCounter = function(bam, skeleton, cov = NULL, midpoint = TRUE, window = 200,
       cov.corr.out$score = cov$reads.corrected
       cov.corr.out$score[is.na(cov.corr.out$score)] = -1
       cov.corr.out = cov.corr.out[width(cov.corr.out)==window] ## remove any funky widths at end of chromosome
-      saveRDS(cov, paste(gsub('.rds$', '', out.rds), '_debug.rds', sep = ''))
-      if (exome == TRUE) {
-        export(cov.corr.out[, 'score'], out.corr, 'bigWig', dataFormat = 'variableStep')
-      } else {
-        export(cov.corr.out[, 'score'], out.corr, 'bigWig', dataFormat = 'fixedStep')
+      if(FALSE){
+        saveRDS(cov, paste(gsub('.rds$', '', out.rds), '_debug.rds', sep = ''))
+        if (exome == TRUE) {
+          export(cov.corr.out[, 'score'], out.corr, 'bigWig', dataFormat = 'variableStep')
+        } else {
+          export(cov.corr.out[, 'score'], out.corr, 'bigWig', dataFormat = 'fixedStep')
+        }
       }
 ##    } #' twalradt Wednesday, Jan 16, 2019 03:55:58 PM
     saveRDS(cov, paste(gsub('.rds$', '', out.rds), '.rds', sep = ''))
